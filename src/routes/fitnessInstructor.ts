@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia";
 import { callGeminiAPI } from "../utils/geminiClient";
+import { normalize } from "../utils/normalize";
 
 const GREETINGS = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite"];
 const ALLOWED_TOPICS = [
@@ -15,11 +16,9 @@ const ALLOWED_TOPICS = [
 export const fitnessInstructorRoute = new Elysia().post(
   "/gemini/chat/fitness-instructor",
   async ({ body }) => {
-    // console.log("📦 BODY:", body);
-
-    const input = body.contents[0]?.parts[0]?.text.toLowerCase() || "";
-    const isGreeting = GREETINGS.some((g) => input.includes(g));
-    const isAllowed = ALLOWED_TOPICS.some((t) => input.includes(t));
+    const input = normalize(body.contents[0]?.parts[0]?.text || "");
+    const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
+    const isAllowed = ALLOWED_TOPICS.some((t) => input.includes(normalize(t)));
 
     if (!isGreeting && !isAllowed) {
       return {

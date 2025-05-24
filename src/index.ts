@@ -3,6 +3,7 @@ import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 import { config } from "dotenv";
 import { fitnessInstructorRoute } from "./routes/fitnessInstructor";
+import { psychologistRoute } from "./routes/psychologist";
 
 config();
 
@@ -22,6 +23,7 @@ const app = new Elysia()
     })
   )
   .use(fitnessInstructorRoute)
+  .use(psychologistRoute)
   .get("/", () => ({ status: "online" }))
   .listen(Number(process.env.PORT) || 3000);
 
