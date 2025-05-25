@@ -47,6 +47,9 @@ const ALLOWED_TOPICS = [
   "meditação",
   "autoconsciência",
   "compaixão",
+  "trauma",
+  "traumático",
+  "traumática",
 
   // Questões existenciais
   "sentido da vida",
@@ -113,6 +116,48 @@ const ALLOWED_TOPICS = [
   "perca",
   "diagnóstico",
   "recuperação",
+
+  // Problemas amorosos e relacionamentos
+  "relacionamento",
+  "problema amoroso",
+  "problemas amorosos",
+  "traição",
+  "chifre",
+  "amante",
+  "ciúmes",
+  "término",
+  "separação",
+  "divórcio",
+  "desilusão amorosa",
+  "relacionamento tóxico",
+  "amor não correspondido",
+  "namorado",
+  "namorada",
+  "casamento",
+  "infidelidade",
+];
+
+const DIVERSITY_TOPICS = [
+  // Identidade, diversidade e preconceito
+  "lgbt",
+  "lgbtqia+",
+  "gay",
+  "lésbica",
+  "bissexual",
+  "transexual",
+  "transgênero",
+  "não-binário",
+  "homossexual",
+  "identidade de gênero",
+  "orientação sexual",
+  "preconceito",
+  "discriminação",
+  "homofobia",
+  "transfobia",
+  "autoaceitação",
+  "sair do armário",
+  "rejeição familiar",
+  "aceitação",
 ];
 
 export const psychologistRoute = new Elysia().post(
