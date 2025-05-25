@@ -29,6 +29,24 @@ const ALLOWED_TOPICS = [
   "estresse",
   "estressado",
   "estressada",
+  "burnout",
+  "esgotamento",
+  "fobia",
+  "fobias",
+  "transtorno",
+  "transtornos",
+  "chateado",
+  "chateada",
+  "preocupado",
+  "preocupada",
+  "preocupação",
+  "preocupações",
+  "desesperança",
+  "desespero",
+  "mindfulness",
+  "meditação",
+  "autoconsciência",
+  "compaixão",
 
   // Questões existenciais
   "sentido da vida",
@@ -39,6 +57,11 @@ const ALLOWED_TOPICS = [
   "sofrimento",
   "solidão",
   "dor emocional",
+  "impermanência",
+  "desapego",
+  "iluminação",
+  "nirvana",
+  "reencarnação",
 
   // Filosofia e espiritualidade
   "espiritualidade",
@@ -56,6 +79,10 @@ const ALLOWED_TOPICS = [
   "virtude",
   "alma",
   "vida após a morte",
+  "budismo",
+  "zen",
+  "karma",
+  "silêncio interior",
 ];
 
 export const psychologistRoute = new Elysia().post(
