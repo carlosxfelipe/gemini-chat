@@ -4,7 +4,6 @@ import swagger from "@elysiajs/swagger";
 import { config } from "dotenv";
 import { fitnessInstructorRoute } from "./routes/fitnessInstructor";
 import { psychologistRoute } from "./routes/psychologist";
-import { investmentAdvisorRoute } from "./routes/investmentAdvisor";
 
 config();
 
@@ -25,7 +24,6 @@ const app = new Elysia()
   )
   .use(fitnessInstructorRoute)
   .use(psychologistRoute)
-  .use(investmentAdvisorRoute)
   .get("/", () => ({ status: "online" }))
   .listen(Number(process.env.PORT) || 3000);
 
