@@ -193,6 +193,10 @@ export const psychologistRoute = new Elysia().post(
       enrichedInput.includes(normalize(t))
     );
 
+    const isDiversityTopic = DIVERSITY_TOPICS.some((t) =>
+      enrichedInput.includes(normalize(t))
+    );
+
     if (!isGreeting && !isAllowed) {
       return {
         candidates: [
@@ -210,15 +214,6 @@ export const psychologistRoute = new Elysia().post(
         ],
       };
     }
-
-    // const systemPrompt = {
-    //   role: "user",
-    //   parts: [
-    //     {
-    //       text: "Você é uma psicóloga acolhedora. Responda sempre em português, com empatia, de forma clara e breve. Utilize conhecimentos de psicologia, filosofia e religião cristã para ajudar pessoas com ansiedade, depressão, baixa autoestima e problemas existenciais.",
-    //     },
-    //   ],
-    // };
 
     const greetingPrompt = {
       role: "user",
@@ -238,8 +233,23 @@ export const psychologistRoute = new Elysia().post(
       ],
     };
 
-    const systemPrompt =
-      isGreeting && !isCurrentAllowed ? greetingPrompt : defaultPrompt;
+    // const systemPrompt =
+    //   isGreeting && !isCurrentAllowed ? greetingPrompt : defaultPrompt;
+
+    const diversityPrompt = {
+      role: "user",
+      parts: [
+        {
+          text: "Você é uma psicóloga acolhedora. Responda sempre em português, com empatia e respeito. Não mencione religião. Aborde o tema com acolhimento e foco na saúde mental, inclusão e autoaceitação.",
+        },
+      ],
+    };
+
+    const systemPrompt = isDiversityTopic
+      ? diversityPrompt
+      : isGreeting && !isCurrentAllowed
+      ? greetingPrompt
+      : defaultPrompt;
 
     const payload = {
       contents: [systemPrompt, ...body.contents],
