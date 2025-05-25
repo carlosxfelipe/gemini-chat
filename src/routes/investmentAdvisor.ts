@@ -55,7 +55,7 @@ export const investmentAdvisorRoute = new Elysia().post(
   async ({ body }) => {
     const input = normalize(body.contents[0]?.parts[0]?.text || "");
     const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
-    const tickerRegex = /\b[A-Z]{4}11\b/i;
+    const tickerRegex = /\b[A-Z]{4}[0-9]{1,2}\b/i;
     const containsTicker = tickerRegex.test(
       body.contents[0]?.parts[0]?.text || ""
     );
