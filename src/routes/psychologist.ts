@@ -24,6 +24,11 @@ const ALLOWED_TOPICS = [
   "autoestima",
   "autoconfiança",
   "autoimagem",
+  "cansado",
+  "cansada",
+  "estresse",
+  "estressado",
+  "estressada",
 
   // Questões existenciais
   "sentido da vida",
