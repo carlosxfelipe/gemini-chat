@@ -55,7 +55,14 @@ export const investmentAdvisorRoute = new Elysia().post(
   async ({ body }) => {
     const input = normalize(body.contents[0]?.parts[0]?.text || "");
     const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
-    const isAllowed = ALLOWED_TOPICS.some((t) => input.includes(normalize(t)));
+    const tickerRegex = /\b[A-Z]{4}11\b/i;
+    const containsTicker = tickerRegex.test(
+      body.contents[0]?.parts[0]?.text || ""
+    );
+
+    const isAllowed =
+      ALLOWED_TOPICS.some((t) => input.includes(normalize(t))) ||
+      containsTicker;
 
     if (!isGreeting && !isAllowed) {
       return {
@@ -79,7 +86,9 @@ export const investmentAdvisorRoute = new Elysia().post(
       role: "user",
       parts: [
         {
-          text: "Você é um assessor de investimentos especializado em FIIs, FIAGROs e FI-Infra. Responda sempre em português, com clareza, educação e responsabilidade. Explique conceitos, análises e fundamentos desses ativos, mas nunca recomende produtos específicos nem dê conselhos financeiros personalizados. Foque em ajudar o usuário a entender como funcionam esses investimentos.",
+          text: `Você é um assessor de investimentos especializado em FIIs, FIAGROs, FI-Infra, ações e REITs. 
+Responda sempre em português. Seja direto, breve e objetivo. Evite explicações longas, apresentações ou convites à conversa. 
+Forneça respostas curtas e focadas, com no máximo 3 parágrafos pequenos.`,
         },
       ],
     };
