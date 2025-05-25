@@ -62,9 +62,7 @@ export const psychologistRoute = new Elysia().post(
   "/gemini/chat/psychologist",
   async ({ body }) => {
     const input = normalize(body.contents[0]?.parts[0]?.text || "");
-    const isGreeting = GREETINGS.some(
-      (g) => normalize(g) && input.includes(normalize(g))
-    );
+    const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
     const isAllowed = ALLOWED_TOPICS.some((t) => input.includes(normalize(t)));
 
     if (!isGreeting && !isAllowed) {
@@ -94,7 +92,16 @@ export const psychologistRoute = new Elysia().post(
     //   ],
     // };
 
-    const systemPrompt = {
+    const greetingPrompt = {
+      role: "user",
+      parts: [
+        {
+          text: "Você é uma psicóloga acolhedora. Responda sempre em português, com empatia. Se for apenas uma saudação, responda de forma simples e breve, com no máximo uma ou duas frases.",
+        },
+      ],
+    };
+
+    const defaultPrompt = {
       role: "user",
       parts: [
         {
@@ -102,6 +109,9 @@ export const psychologistRoute = new Elysia().post(
         },
       ],
     };
+
+    const systemPrompt =
+      isGreeting && !isAllowed ? greetingPrompt : defaultPrompt;
 
     const payload = {
       contents: [systemPrompt, ...body.contents],
