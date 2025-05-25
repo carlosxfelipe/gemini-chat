@@ -104,7 +104,13 @@ const ALLOWED_TOPICS = [
 export const psychologistRoute = new Elysia().post(
   "/gemini/chat/psychologist",
   async ({ body }) => {
-    const input = normalize(body.contents[0]?.parts[0]?.text || "");
+    // const input = normalize(body.contents[0]?.parts[0]?.text || "");
+
+    const lastUserMessage = [...body.contents]
+      .reverse()
+      .find((msg) => msg.role === "user");
+    const input = normalize(lastUserMessage?.parts[0]?.text || "");
+
     const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
     const isCurrentAllowed = ALLOWED_TOPICS.some((t) =>
       input.includes(normalize(t))
