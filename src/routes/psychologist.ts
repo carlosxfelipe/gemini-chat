@@ -110,12 +110,10 @@ export const psychologistRoute = new Elysia().post(
       input.includes(normalize(t))
     );
 
-    // Verifica se alguma mensagem anterior do usuário contém um tópico permitido
-    const userMessages = body.contents
-      .filter((msg) => msg.role === "user")
-      .map((msg) => msg.parts[0]?.text || "");
+    // Verifica se alguma mensagem anterior (usuário ou IA) contém um tópico permitido
+    const allMessages = body.contents.map((msg) => msg.parts[0]?.text || "");
 
-    const hasAllowedTopic = userMessages.some((msg) =>
+    const hasAllowedTopic = allMessages.some((msg) =>
       ALLOWED_TOPICS.some((t) => normalize(msg).includes(normalize(t)))
     );
 
