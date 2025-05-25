@@ -83,6 +83,22 @@ const ALLOWED_TOPICS = [
   "zen",
   "karma",
   "silêncio interior",
+
+  // Neurodivergências e transtornos do neurodesenvolvimento
+  "tdah",
+  "tea",
+  "autismo",
+  "autista",
+  "bipolaridade",
+  "transtorno bipolar",
+  "transtorno de personalidade",
+  "transtorno obsessivo-compulsivo",
+  "toc",
+  "espectro autista",
+  "déficit de atenção",
+  "hiperatividade",
+  "neurodivergente",
+  "neurodivergência",
 ];
 
 export const psychologistRoute = new Elysia().post(
