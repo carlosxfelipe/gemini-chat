@@ -99,6 +99,20 @@ const ALLOWED_TOPICS = [
   "hiperatividade",
   "neurodivergente",
   "neurodivergência",
+
+  // Saúde e enfrentamento de doenças
+  "tratamento",
+  "cura",
+  "câncer",
+  "luto",
+  "enfermidade",
+  "doença",
+  "terminal",
+  "morte",
+  "perda",
+  "perca",
+  "diagnóstico",
+  "recuperação",
 ];
 
 export const psychologistRoute = new Elysia().post(
@@ -107,16 +121,6 @@ export const psychologistRoute = new Elysia().post(
     const lastUserMessage = [...body.contents]
       .reverse()
       .find((msg) => msg.role === "user");
-
-    console.log("📝 MENSAGENS RECEBIDAS:");
-    body.contents.forEach((msg, i) => {
-      console.log(`[${i}] ${msg.role}: ${msg.parts[0]?.text}`);
-    });
-
-    console.log(
-      "👤 Última mensagem do usuário:",
-      lastUserMessage?.parts[0]?.text
-    );
 
     const input = normalize(lastUserMessage?.parts[0]?.text || "");
 
@@ -131,14 +135,10 @@ export const psychologistRoute = new Elysia().post(
         ALLOWED_TOPICS.some((t) => normalize(msg).includes(normalize(t)))
       );
 
-    console.log("📌 Último tópico permitido no histórico:", lastAllowedTopic);
-
     const enrichedInput =
       !isCurrentAllowed && lastAllowedTopic
         ? `${input} ${lastAllowedTopic}`
         : input;
-
-    console.log("🔗 enrichedInput:", enrichedInput);
 
     const isGreeting = GREETINGS.some((g) =>
       enrichedInput.includes(normalize(g))
@@ -147,9 +147,6 @@ export const psychologistRoute = new Elysia().post(
     const isAllowed = ALLOWED_TOPICS.some((t) =>
       enrichedInput.includes(normalize(t))
     );
-
-    console.log("👋 É saudação?", isGreeting);
-    console.log("✅ Tópico permitido encontrado?", isAllowed);
 
     if (!isGreeting && !isAllowed) {
       return {
