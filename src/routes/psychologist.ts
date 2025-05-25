@@ -108,7 +108,19 @@ export const psychologistRoute = new Elysia().post(
     const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
     const isAllowed = ALLOWED_TOPICS.some((t) => input.includes(normalize(t)));
 
-    if (!isGreeting && !isAllowed) {
+    // Tenta recuperar a última mensagem do usuário (antes da atual)
+    const previousUserMessage =
+      body.contents
+        .slice(0, -1) // pega todas menos a última
+        .reverse() // começa de trás pra frente
+        .find((msg) => msg.role === "user")?.parts[0]?.text || "";
+
+    const isPreviousAllowed = ALLOWED_TOPICS.some((t) =>
+      normalize(previousUserMessage).includes(normalize(t))
+    );
+
+    // Decide se deve continuar com base na mensagem atual ou anterior
+    if (!isGreeting && !isAllowed && !isPreviousAllowed) {
       return {
         candidates: [
           {
