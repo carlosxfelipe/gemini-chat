@@ -104,26 +104,54 @@ const ALLOWED_TOPICS = [
 export const psychologistRoute = new Elysia().post(
   "/gemini/chat/psychologist",
   async ({ body }) => {
-    // const input = normalize(body.contents[0]?.parts[0]?.text || "");
-
     const lastUserMessage = [...body.contents]
       .reverse()
       .find((msg) => msg.role === "user");
+
+    console.log("📝 MENSAGENS RECEBIDAS:");
+    body.contents.forEach((msg, i) => {
+      console.log(`[${i}] ${msg.role}: ${msg.parts[0]?.text}`);
+    });
+
+    console.log(
+      "👤 Última mensagem do usuário:",
+      lastUserMessage?.parts[0]?.text
+    );
+
     const input = normalize(lastUserMessage?.parts[0]?.text || "");
 
-    const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
     const isCurrentAllowed = ALLOWED_TOPICS.some((t) =>
       input.includes(normalize(t))
     );
 
-    // Verifica se alguma mensagem anterior (usuário ou IA) contém um tópico permitido
-    const allMessages = body.contents.map((msg) => msg.parts[0]?.text || "");
+    const lastAllowedTopic = [...body.contents]
+      .map((msg) => msg.parts[0]?.text || "")
+      .reverse()
+      .find((msg) =>
+        ALLOWED_TOPICS.some((t) => normalize(msg).includes(normalize(t)))
+      );
 
-    const hasAllowedTopic = allMessages.some((msg) =>
-      ALLOWED_TOPICS.some((t) => normalize(msg).includes(normalize(t)))
+    console.log("📌 Último tópico permitido no histórico:", lastAllowedTopic);
+
+    const enrichedInput =
+      !isCurrentAllowed && lastAllowedTopic
+        ? `${input} ${lastAllowedTopic}`
+        : input;
+
+    console.log("🔗 enrichedInput:", enrichedInput);
+
+    const isGreeting = GREETINGS.some((g) =>
+      enrichedInput.includes(normalize(g))
     );
 
-    if (!isGreeting && !hasAllowedTopic) {
+    const isAllowed = ALLOWED_TOPICS.some((t) =>
+      enrichedInput.includes(normalize(t))
+    );
+
+    console.log("👋 É saudação?", isGreeting);
+    console.log("✅ Tópico permitido encontrado?", isAllowed);
+
+    if (!isGreeting && !isAllowed) {
       return {
         candidates: [
           {
