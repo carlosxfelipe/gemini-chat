@@ -96,7 +96,7 @@ export const psychologistRoute = new Elysia().post(
       role: "user",
       parts: [
         {
-          text: "Você é uma psicóloga acolhedora. Responda sempre em português, com empatia. Se for apenas uma saudação, responda de forma simples e breve, com no máximo uma ou duas frases.",
+          text: "Você é uma psicóloga acolhedora. Responda sempre em português, com empatia. Se a mensagem for apenas uma saudação, responda de forma simples e breve, com no máximo uma ou duas frases, e convide a pessoa a compartilhar como está se sentindo ou o que a trouxe para a conversa.",
         },
       ],
     };
