@@ -106,21 +106,20 @@ export const psychologistRoute = new Elysia().post(
   async ({ body }) => {
     const input = normalize(body.contents[0]?.parts[0]?.text || "");
     const isGreeting = GREETINGS.some((g) => input.includes(normalize(g)));
-    const isAllowed = ALLOWED_TOPICS.some((t) => input.includes(normalize(t)));
-
-    // Tenta recuperar a última mensagem do usuário (antes da atual)
-    const previousUserMessage =
-      body.contents
-        .slice(0, -1) // pega todas menos a última
-        .reverse() // começa de trás pra frente
-        .find((msg) => msg.role === "user")?.parts[0]?.text || "";
-
-    const isPreviousAllowed = ALLOWED_TOPICS.some((t) =>
-      normalize(previousUserMessage).includes(normalize(t))
+    const isCurrentAllowed = ALLOWED_TOPICS.some((t) =>
+      input.includes(normalize(t))
     );
 
-    // Decide se deve continuar com base na mensagem atual ou anterior
-    if (!isGreeting && !isAllowed && !isPreviousAllowed) {
+    // Verifica se alguma mensagem anterior do usuário contém um tópico permitido
+    const userMessages = body.contents
+      .filter((msg) => msg.role === "user")
+      .map((msg) => msg.parts[0]?.text || "");
+
+    const hasAllowedTopic = userMessages.some((msg) =>
+      ALLOWED_TOPICS.some((t) => normalize(msg).includes(normalize(t)))
+    );
+
+    if (!isGreeting && !hasAllowedTopic) {
       return {
         candidates: [
           {
@@ -166,7 +165,7 @@ export const psychologistRoute = new Elysia().post(
     };
 
     const systemPrompt =
-      isGreeting && !isAllowed ? greetingPrompt : defaultPrompt;
+      isGreeting && !isCurrentAllowed ? greetingPrompt : defaultPrompt;
 
     const payload = {
       contents: [systemPrompt, ...body.contents],
