@@ -197,6 +197,33 @@ export const psychologistRoute = new Elysia().post(
       enrichedInput.includes(normalize(t))
     );
 
+    // Resposta especial para o PAP da Unifor
+    const mentionsPapAndUnifor =
+      normalize(input).includes("pap") && normalize(input).includes("unifor");
+
+    if (mentionsPapAndUnifor) {
+      return {
+        candidates: [
+          {
+            content: {
+              role: "model",
+              parts: [
+                {
+                  text:
+                    "O Programa de Apoio Psicopedagógico (PAP) da Unifor oferece suporte emocional e psicopedagógico para alunos. Você pode entrar em contato pelos seguintes canais:\n\n" +
+                    "📞 Telefone: (85) 3477.3399\n" +
+                    "💬 WhatsApp: (85) 99250.7530\n" +
+                    "📧 E-mail: pap@unifor.br\n\n" +
+                    "Se estiver passando por dificuldades, não hesite em procurar ajuda. 💙",
+                },
+              ],
+            },
+            finishReason: "STOP",
+          },
+        ],
+      };
+    }
+
     if (!isGreeting && !isAllowed) {
       return {
         candidates: [
