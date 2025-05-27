@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { callGeminiAPI } from "../utils/geminiClient";
 import { normalize } from "../utils/normalize";
+import { papUniforResponse } from "../utils/papMessage";
 
 const GREETINGS = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite"];
 const ALLOWED_TOPICS = [
@@ -144,26 +145,7 @@ export const moemaRoute = new Elysia().post(
       normalize(input).includes("pap") && normalize(input).includes("unifor");
 
     if (mentionsPapAndUnifor) {
-      return {
-        candidates: [
-          {
-            content: {
-              role: "model",
-              parts: [
-                {
-                  text:
-                    "O Programa de Apoio Psicopedagógico (PAP) da Unifor oferece suporte emocional e psicopedagógico para alunos. Você pode entrar em contato pelos seguintes canais:\n\n" +
-                    "📞 Telefone: (85) 3477.3399\n" +
-                    "💬 WhatsApp: (85) 99250.7530\n" +
-                    "📧 E-mail: pap@unifor.br\n\n" +
-                    "Se estiver passando por dificuldades, não hesite em procurar ajuda. 💙",
-                },
-              ],
-            },
-            finishReason: "STOP",
-          },
-        ],
-      };
+      return papUniforResponse;
     }
 
     // Resposta especial para Estrutura de Dados com Paulo Cirillo
