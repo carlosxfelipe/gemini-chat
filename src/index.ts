@@ -5,6 +5,7 @@ import { config } from "dotenv";
 import { fitnessInstructorRoute } from "./routes/fitnessInstructor";
 import { psychologistRoute } from "./routes/psychologist";
 import { moemaRoute } from "./routes/moema";
+import { investmentAdvisorRoute } from "./routes/investmentAdvisor.ts";
 
 config();
 
@@ -26,6 +27,7 @@ const app = new Elysia()
   .use(fitnessInstructorRoute)
   .use(psychologistRoute)
   .use(moemaRoute)
+  .use(investmentAdvisorRoute)
   .get("/", () => ({ status: "online" }))
   .listen(Number(process.env.PORT) || 3000);
 
