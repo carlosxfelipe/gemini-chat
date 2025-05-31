@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import { fitnessInstructorRoute } from "./routes/fitnessInstructor";
 import { psychologistRoute } from "./routes/psychologist";
 import { moemaRoute } from "./routes/moema";
-import { investmentAdvisorRoute } from "./routes/investmentAdvisor.ts";
+import { investmentAdvisorRoute } from "./routes/investmentAdvisor";
 
 config();
 
