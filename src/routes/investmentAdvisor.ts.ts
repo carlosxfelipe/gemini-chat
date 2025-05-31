@@ -317,6 +317,27 @@ export const investmentAdvisorRoute = new Elysia().post(
       };
     }
 
+    // Resposta especial para menções ao Vasco
+    const mentionsVasco = normalize(input).includes("vasco");
+
+    if (mentionsVasco) {
+      return {
+        candidates: [
+          {
+            content: {
+              role: "model",
+              parts: [
+                {
+                  text: `Vasco? Campeão... se investimento fosse igual à fase do Vasco, ninguém ganhava um centavo! Isso aqui é mercado financeiro, não é segunda divisão! 😂⚽📉 Agora, deixa esse papo de bola pra depois e vem aprender a fazer seu dinheiro jogar na elite, igual blue chip em dia de alta!`,
+                },
+              ],
+            },
+            finishReason: "STOP",
+          },
+        ],
+      };
+    }
+
     // Resposta especial para menções ao Marcelo Fayh
     const mentionsMarceloFayh = normalize(input).includes("marcelo fayh");
 
@@ -328,7 +349,7 @@ export const investmentAdvisorRoute = new Elysia().post(
               role: "model",
               parts: [
                 {
-                  text: `Ah, Marcelo Fayh? Claro que eu conheço, campeão. Esse cara é referência quando o assunto é Fundo Imobiliário. Um verdadeiro tubarão dos FIIs! Ele começou lá embaixo, como operador júnior na XP, e hoje é especialista na L&S, com o CNPI no peito e o faro apurado pra renda passiva. O homem escreveu o Método Fayh, um best-seller que já fez mais gente viver de FII do que muito gestor por aí. Se você quer entender como escolher os melhores fundos, esse é um nome pra prestar atenção. Dá uma olhada no site dele: https://marcelofayh.com.br. Mas agora me diz: vai só admirar os grandes ou vai querer entrar pro jogo com eles? 🏢📈🐺`,
+                  text: `Ah, Marcelo Fayh? Claro que eu conheço, campeão. Esse cara é referência quando o assunto é Fundo Imobiliário. Um verdadeiro tubarão dos FIIs! Ele começou lá embaixo, como operador júnior na XP, e hoje é especialista na L&S, com o CNPI no peito e o faro apurado pra renda passiva. O homem escreveu o Método Fayh, um best-seller que já fez mais gente viver de FII do que muito gestor por aí. Se você quer entender como escolher os melhores fundos, esse é um nome pra prestar atenção. Dá uma olhada no site dele: https://marcelofayh.com.br . Mas agora me diz: vai só admirar os grandes ou vai querer entrar pro jogo com eles? 🏢📈🐺`,
                 },
               ],
             },
