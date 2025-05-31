@@ -317,10 +317,13 @@ export const investmentAdvisorRoute = new Elysia().post(
       };
     }
 
-    // Resposta especial para menções ao Vasco
-    const mentionsVasco = normalize(input).includes("vasco");
+    // Resposta especial para FIIs problemáticos
+    const problematicFIIs = ["tord11", "vslh11", "dev11", "hctr11"];
+    const mentionsProblematicFII = problematicFIIs.some((ticker) =>
+      normalize(input).includes(ticker)
+    );
 
-    if (mentionsVasco) {
+    if (mentionsProblematicFII) {
       return {
         candidates: [
           {
@@ -328,7 +331,7 @@ export const investmentAdvisorRoute = new Elysia().post(
               role: "model",
               parts: [
                 {
-                  text: `Vasco? Campeão... se investimento fosse igual à fase do Vasco, ninguém ganhava um centavo! Isso aqui é mercado financeiro, não é segunda divisão! 😂⚽📉 Agora, deixa esse papo de bola pra depois e vem aprender a fazer seu dinheiro jogar na elite, igual blue chip em dia de alta!`,
+                  text: `Esses fundos aí? TORD11, VSLH11, DEV11, HCTR11... Campeão, esquece que eles existem. É dor de cabeça garantida. Isso aí é tipo entrar num cassino com o bolso furado. Se você quer consistência, segurança e bons rendimentos, passa longe. Aqui a gente investe com estratégia, não com esperança. 🚫📉`,
                 },
               ],
             },
@@ -350,6 +353,52 @@ export const investmentAdvisorRoute = new Elysia().post(
               parts: [
                 {
                   text: `Ah, Marcelo Fayh? Claro que eu conheço, campeão. Esse cara é referência quando o assunto é Fundo Imobiliário. Um verdadeiro tubarão dos FIIs! Ele começou lá embaixo, como operador júnior na XP, e hoje é especialista na L&S, com o CNPI no peito e o faro apurado pra renda passiva. O homem escreveu o Método Fayh, um best-seller que já fez mais gente viver de FII do que muito gestor por aí. Se você quer entender como escolher os melhores fundos, esse é um nome pra prestar atenção. Dá uma olhada no site dele: https://marcelofayh.com.br . Mas agora me diz: vai só admirar os grandes ou vai querer entrar pro jogo com eles? 🏢📈🐺`,
+                },
+              ],
+            },
+            finishReason: "STOP",
+          },
+        ],
+      };
+    }
+
+    // Resposta especial para menções ao Lucas Fii
+    const mentionsLucasFii =
+      normalize(input).includes("lucas fii") ||
+      normalize(input).includes("lucas fiis");
+
+    if (mentionsLucasFii) {
+      return {
+        candidates: [
+          {
+            content: {
+              role: "model",
+              parts: [
+                {
+                  text: `Lucas Fii? ✈️ Claro que eu conheço esse cara, campeão! Polêmico? Sempre. Mas não dá pra negar que ele movimenta o mercado com opiniões afiadas e análises que cutucam muita gestora por aí. Eu mesmo, de vez em quando, dou uma passada no canal dele pra ver o que tá pegando: https://www.youtube.com/@lucasfiis. Informação nunca é demais — desde que você saiba filtrar com inteligência de investidor. 🧠📊`,
+                },
+              ],
+            },
+            finishReason: "STOP",
+          },
+        ],
+      };
+    }
+
+    // Resposta especial para menções ao Vasco
+    const mentionsVasco =
+      normalize(input).includes("vasco") ||
+      normalize(input).includes("vascaíno");
+
+    if (mentionsVasco) {
+      return {
+        candidates: [
+          {
+            content: {
+              role: "model",
+              parts: [
+                {
+                  text: `Vasco? Campeão... se investimento fosse igual à fase do Vasco, ninguém ganhava um centavo! Isso aqui é mercado financeiro, não é segunda divisão! 😂⚽📉 Agora, deixa esse papo de bola pra depois e vem aprender a fazer seu dinheiro jogar na elite, igual blue chip em dia de alta!`,
                 },
               ],
             },
