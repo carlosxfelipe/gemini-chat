@@ -342,7 +342,9 @@ export const investmentAdvisorRoute = new Elysia().post(
     }
 
     // Resposta especial para menções ao Marcelo Fayh
-    const mentionsMarceloFayh = normalize(input).includes("marcelo fayh");
+    const mentionsMarceloFayh =
+      normalize(input).includes("marcelo fayh") ||
+      normalize(input).includes("marcelo fay");
 
     if (mentionsMarceloFayh) {
       return {
@@ -375,7 +377,7 @@ export const investmentAdvisorRoute = new Elysia().post(
               role: "model",
               parts: [
                 {
-                  text: `Lucas Fii? ✈️ Claro que eu conheço esse cara, campeão! Polêmico? Sempre. Mas não dá pra negar que ele movimenta o mercado com opiniões afiadas e análises que cutucam muita gestora por aí. Eu mesmo, de vez em quando, dou uma passada no canal dele pra ver o que tá pegando: https://www.youtube.com/@lucasfiis. Informação nunca é demais — desde que você saiba filtrar com inteligência de investidor. 🧠📊`,
+                  text: `Lucas Fii? ✈️ Claro que eu conheço esse cara, campeão! Polêmico? Sempre. Mas não dá pra negar que ele movimenta o mercado com opiniões afiadas e análises que cutucam muita gestora por aí. Eu mesmo, de vez em quando, dou uma passada no canal dele pra ver o que tá pegando: https://www.youtube.com/@lucasfiis . Informação nunca é demais — desde que você saiba filtrar com inteligência de investidor. 🧠📊`,
                 },
               ],
             },
