@@ -318,7 +318,7 @@ export const investmentAdvisorRoute = new Elysia().post(
     }
 
     // Resposta especial para FIIs problemáticos
-    const problematicFIIs = ["tord11", "vslh11", "dev11", "hctr11"];
+    const problematicFIIs = ["tord11", "vslh11", "deva11", "hctr11"];
     const mentionsProblematicFII = problematicFIIs.some((ticker) =>
       normalize(input).includes(ticker)
     );
@@ -331,7 +331,7 @@ export const investmentAdvisorRoute = new Elysia().post(
               role: "model",
               parts: [
                 {
-                  text: `Esses fundos aí? TORD11, VSLH11, DEV11, HCTR11... Campeão, esquece que eles existem. É dor de cabeça garantida. Isso aí é tipo entrar num cassino com o bolso furado. Se você quer consistência, segurança e bons rendimentos, passa longe. Aqui a gente investe com estratégia, não com esperança. 🚫📉`,
+                  text: `Esses fundos aí? TORD11, VSLH11, DEVA11, HCTR11... Campeão, esquece que eles existem. É dor de cabeça garantida. Isso aí é tipo entrar num cassino com o bolso furado. Se você quer consistência, segurança e bons rendimentos, passa longe. Aqui a gente investe com estratégia, não com esperança. 🚫📉`,
                 },
               ],
             },
@@ -378,6 +378,27 @@ export const investmentAdvisorRoute = new Elysia().post(
               parts: [
                 {
                   text: `Lucas Fii? ✈️ Claro que eu conheço esse cara, campeão! Polêmico? Sempre. Mas não dá pra negar que ele movimenta o mercado com opiniões afiadas e análises que cutucam muita gestora por aí. Eu mesmo, de vez em quando, dou uma passada no canal dele pra ver o que tá pegando: https://www.youtube.com/@lucasfiis . Informação nunca é demais — desde que você saiba filtrar com inteligência de investidor. 🧠📊`,
+                },
+              ],
+            },
+            finishReason: "STOP",
+          },
+        ],
+      };
+    }
+
+    // Resposta especial para menções ao Tetzner
+    const mentionsTetzner = normalize(input).includes("tetzner");
+
+    if (mentionsTetzner) {
+      return {
+        candidates: [
+          {
+            content: {
+              role: "model",
+              parts: [
+                {
+                  text: `Tetzner? Campeão, vou te contar... quando bate o sono, eu coloco os vídeos dele e durmo melhor do que com Tesouro Selic! 😂 Agora, se eu pudesse dar um presente pra esse mito dos FIIs, seria uma aula de OBS Studio — pra ele parar de imprimir RG e salvar umas árvores por aí. 🌳🖨️ Se quiser conferir o canal dele, tá aqui ó: https://www.youtube.com/@TetznerFiis/videos . Mas ó, cuidado pra não cochilar! 😴📉`,
                 },
               ],
             },
