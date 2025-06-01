@@ -256,6 +256,18 @@ const ALLOWED_TOPICS = [
 
 const TICKER_REGEX = /^[A-Z]{4}[0-9]{1,2}$/;
 
+const TICKER_ALIASES = {
+  urcao: "urpr11",
+  bode: "bodb11",
+};
+
+const applyAliases = (text: string): string => {
+  return Object.entries(TICKER_ALIASES).reduce((acc, [alias, ticker]) => {
+    const regex = new RegExp(`\\b${alias}\\b`, "gi");
+    return acc.replace(regex, ticker);
+  }, text);
+};
+
 export const investmentAdvisorRoute = new Elysia().post(
   "/gemini/chat/investment-advisor",
   async ({ body }) => {
@@ -318,10 +330,8 @@ export const investmentAdvisorRoute = new Elysia().post(
     }
 
     // Resposta especial para FIIs problemáticos
-    const problematicFIIs = ["tord11", "vslh11", "deva11", "hctr11"];
-    const mentionsProblematicFII = problematicFIIs.some((ticker) =>
-      normalize(input).includes(ticker)
-    );
+    const problematicFIIRegex = /\b(tord|vslh|deva|hctr)(11)?\b/i;
+    const mentionsProblematicFII = problematicFIIRegex.test(normalize(input));
 
     if (mentionsProblematicFII) {
       return {
@@ -470,8 +480,27 @@ export const investmentAdvisorRoute = new Elysia().post(
     const systemPrompt =
       isGreeting && !isCurrentAllowed ? greetingPrompt : defaultPrompt;
 
+    // const payload = {
+    //   contents: [systemPrompt, ...body.contents],
+    // };
+
+    // Aplica aliases no último input do usuário (apenas para resposta padrão)
+    const finalContents = [...body.contents];
+    const lastUserIndex = finalContents.map((m) => m.role).lastIndexOf("user");
+
+    if (lastUserIndex !== -1) {
+      const userText = finalContents[lastUserIndex].parts[0].text;
+      const normalizedText = normalize(userText);
+      const aliasedText = applyAliases(normalizedText);
+
+      finalContents[lastUserIndex] = {
+        ...finalContents[lastUserIndex],
+        parts: [{ text: aliasedText }],
+      };
+    }
+
     const payload = {
-      contents: [systemPrompt, ...body.contents],
+      contents: [systemPrompt, ...finalContents],
     };
 
     return await callGeminiAPI(payload);
