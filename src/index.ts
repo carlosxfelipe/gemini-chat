@@ -10,7 +10,17 @@ import { investmentAdvisorRoute } from "./routes/investmentAdvisor";
 config();
 
 const app = new Elysia()
-  .use(cors())
+  // .use(cors())
+  .use(
+    cors({
+      origin: [
+        "https://unifor-mobile.netlify.app",
+        "https://moema.netlify.app",
+        "https://sofia-psi.netlify.app",
+        "https://jordan-belfort.netlify.app",
+      ],
+    })
+  )
   .use(
     swagger({
       path: "/docs",
